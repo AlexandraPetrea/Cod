@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selectable Autoplay MP3 Playlist</title>
+</head>
+<body>
+    <h1>Selectable Autoplay MP3 Playlist</h1>
+    <h2>All Articles:</h2>
+    <ul id="article-list">
+        <li id="article-0">Article 1 Title</li>
+        <li id="article-1">Article 2 Title</li>
+    </ul>
+    <h2>Currently Playing:</h2>
+    <p id="current-article"></p>
+    <audio id="audio" controls autoplay>
+        <source id="source" src="" type="audio/mpeg">
+    </audio>
+    <script>
+        const audio = document.getElementById("audio");
+        const source = document.getElementById("source");
+        const articleTitles = [
+            "Article 1 Title",
+            "Article 2 Title",
+        ];
+        const mp3Files = [
+            "https://alexandrapetrea.github.io/Cod/mp3_files/Articolul_1.mp3",
+            "https://alexandrapetrea.github.io/Cod/mp3_files/Articolul_2.mp3",
+        ];
+        let currentIndex = 0;
+        audio.addEventListener("ended", function() {
+            currentIndex = (currentIndex + 1) % mp3Files.length;
+            source.src = mp3Files[currentIndex];
+            audio.load();
+            audio.play();
+            document.getElementById("current-article").textContent = articleTitles[currentIndex];
+        });
+        document.getElementById("article-list").addEventListener("click", function(event) {
+            if (event.target && event.target.nodeName == "LI") {
+                const index = parseInt(event.target.id.split("-")[1]);
+                source.src = mp3Files[index];
+                audio.load();
+                audio.play();
+                document.getElementById("current-article").textContent = articleTitles[index];
+                currentIndex = index;
+            }
+        });
+        source.src = mp3Files[currentIndex];
+        audio.load();
+        audio.play();
+        document.getElementById("current-article").textContent = articleTitles[currentIndex];
+    </script>
+</body>
+</html>
